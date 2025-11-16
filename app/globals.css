@@ -61,7 +61,7 @@ body {
 
 /* Input Styles */
 .input-cartoon {
-  @apply w-full px-4 py-3 rounded-lg border-3 border-cartoon-dark
+  @apply w-full px-4 py-3 rounded-lg border-4 border-cartoon-dark
          focus:outline-none focus:ring-4 focus:ring-primary focus:ring-opacity-30
          transition-all duration-150;
 }
