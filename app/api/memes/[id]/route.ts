@@ -4,7 +4,7 @@ import { db } from '@/lib/db';
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const authHeader = request.headers.get('authorization');
@@ -18,7 +18,8 @@ export async function DELETE(
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
-    const memeId = parseInt(params.id);
+    const { id } = await params;
+    const memeId = parseInt(id);
     if (isNaN(memeId)) {
       return NextResponse.json({ error: 'Invalid meme ID' }, { status: 400 });
     }

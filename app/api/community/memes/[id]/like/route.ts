@@ -3,10 +3,11 @@ import { db } from '@/lib/db';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const memeId = parseInt(params.id);
+    const { id } = await params;
+    const memeId = parseInt(id);
 
     if (isNaN(memeId)) {
       return NextResponse.json(
