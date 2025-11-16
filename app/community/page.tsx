@@ -10,6 +10,11 @@ interface CommunityMeme {
   likes: number;
   views: number;
   created_at: string;
+  userId?: number;
+  user?: {
+    id: number;
+    username: string;
+  };
 }
 
 export default function CommunityPage() {
