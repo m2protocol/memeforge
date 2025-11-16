@@ -11,29 +11,30 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "next": "^15.0.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "openai": "^4.67.3",
     "@prisma/client": "^5.22.0",
     "@prisma/extension-accelerate": "^1.2.1",
+    "@vercel/blob": "^2.0.0",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
+    "next": "^15.0.3",
+    "openai": "^4.67.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "sharp": "^0.33.5",
     "zustand": "^5.0.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.9.0",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/jsonwebtoken": "^9.0.7",
-    "prisma": "^5.22.0",
-    "typescript": "^5.6.3",
-    "tailwindcss": "^3.4.14",
-    "postcss": "^8.4.47",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.14.0",
-    "eslint-config-next": "^15.0.3"
+    "eslint-config-next": "^15.0.3",
+    "postcss": "^8.4.47",
+    "prisma": "^5.22.0",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.6.3"
   }
 }

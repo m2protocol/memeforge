@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { generateMemeImage } from '@/lib/ai/dalle';
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { uploadImageToBlob, generateMemeFilename } from '@/lib/storage/blob';
 
 export async function POST(request: NextRequest) {
   try {
@@ -59,6 +60,10 @@ export async function POST(request: NextRequest) {
       logoDescription,
     });
 
+    // Upload image to persistent storage
+    const filename = generateMemeFilename(userId);
+    const permanentUrl = await uploadImageToBlob(result.imageUrl, filename);
+
     // Save to database
     const ipAddress = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || undefined;
 
@@ -67,7 +72,7 @@ export async function POST(request: NextRequest) {
     const meme = await db.createMeme(
       result.originalPrompt,
       result.enhancedPrompt,
-      result.imageUrl,
+      permanentUrl, // Use permanent blob URL instead of temporary DALL-E URL
       userId,
       characterId,
       true, // Auto-publish all memes to community
@@ -79,7 +84,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      imageUrl: result.imageUrl,
+      imageUrl: permanentUrl, // Return permanent URL instead of temporary DALL-E URL
       memeId: meme.id,
       remainingGenerations: dailyLimit - generationCount - 1,
     });
