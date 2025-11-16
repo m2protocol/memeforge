@@ -28,6 +28,7 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<UserStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     loadDashboard();
@@ -107,6 +108,10 @@ export default function DashboardPage() {
     } catch (error) {
       console.error('Failed to delete meme:', error);
     }
+  };
+
+  const handleImageError = (memeId: number) => {
+    setImageErrors(prev => new Set(prev).add(memeId));
   };
 
   if (loading) {
@@ -211,13 +216,26 @@ export default function DashboardPage() {
                 <div key={meme.id} className="card-cartoon">
                   {/* Image */}
                   <div className="relative w-full aspect-square bg-gray-100 rounded-lg overflow-hidden border-3 border-cartoon-dark mb-4">
-                    <Image
-                      src={meme.image_url}
-                      alt={meme.prompt}
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
+                    {imageErrors.has(meme.id) ? (
+                      <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                        <div className="text-6xl mb-4">🎨</div>
+                        <p className="text-gray-500 font-semibold text-center px-4">
+                          Image expired
+                        </p>
+                        <p className="text-gray-400 text-sm text-center px-4 mt-2">
+                          Generated before permanent storage
+                        </p>
+                      </div>
+                    ) : (
+                      <Image
+                        src={meme.image_url}
+                        alt={meme.prompt}
+                        fill
+                        className="object-cover"
+                        unoptimized
+                        onError={() => handleImageError(meme.id)}
+                      />
+                    )}
                   </div>
 
                   {/* Prompt */}
