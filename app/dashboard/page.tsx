@@ -153,7 +153,7 @@ export default function DashboardPage() {
               <div className="text-sm text-gray-600 font-semibold">Total Memes</div>
             </div>
             <div className="card-cartoon text-center">
-              <div className="text-4xl mb-2">❤️</div>
+              <div className="text-4xl mb-2"></div>
               <div className="text-3xl font-black text-primary mb-1">{stats.totalLikes}</div>
               <div className="text-sm text-gray-600 font-semibold">Total Likes</div>
             </div>
@@ -163,7 +163,7 @@ export default function DashboardPage() {
               <div className="text-sm text-gray-600 font-semibold">Total Views</div>
             </div>
             <div className="card-cartoon text-center">
-              <div className="text-4xl mb-2">⚡</div>
+              <div className="text-4xl mb-2"></div>
               <div className="text-3xl font-black text-primary mb-1">
                 {stats.dailyLimit - stats.generationsToday}
               </div>
@@ -180,7 +180,7 @@ export default function DashboardPage() {
                 <h3 className="text-xl font-bold text-cartoon-dark mb-2">🚀 Generate New Meme</h3>
                 <p className="text-gray-600">Create your next masterpiece</p>
               </div>
-              <div className="text-5xl">➡️</div>
+              <div className="text-5xl"></div>
             </div>
           </a>
           <div className="card-cartoon bg-gradient-to-r from-primary to-blue-600 text-white border-cartoon-dark">
@@ -232,7 +232,7 @@ export default function DashboardPage() {
                       <span className="font-semibold">{meme.views}</span>
                     </span>
                     <span className="flex items-center space-x-1">
-                      <span>❤️</span>
+                      <span></span>
                       <span className="font-semibold">{meme.likes}</span>
                     </span>
                     <span className={`px-2 py-1 rounded text-xs font-bold ${

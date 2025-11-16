@@ -61,19 +61,19 @@ export default function Footer() {
             <h3 className="font-bold text-cartoon-dark mb-4 text-lg">About</h3>
             <ul className="space-y-2">
               <li className="text-gray-600 font-medium">
-                🎨 Cartoon Style Only
+                Cartoon Style Only
               </li>
               <li className="text-gray-600 font-medium">
-                🚀 No Registration Limits
+                No Registration Limits
               </li>
               <li className="text-gray-600 font-medium">
-                💎 Free: 5/day Guest
+                Free: 5/day Guest
               </li>
               <li className="text-gray-600 font-medium">
-                ⚡ Free: 50/day Registered
+                Free: 50/day Registered
               </li>
               <li className="text-gray-600 font-medium">
-                🌟 Open Source
+                Open Source
               </li>
             </ul>
           </div>

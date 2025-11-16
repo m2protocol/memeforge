@@ -8,7 +8,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-8">
             <span className="inline-block bg-cartoon-accent text-cartoon-dark font-bold px-6 py-2 rounded-full border-3 border-cartoon-dark shadow-[4px_4px_0px_0px_rgba(45,55,72,1)] mb-6">
-              🎨 100% Free Forever
+              100% Free Forever
             </span>
           </div>
 
@@ -24,22 +24,21 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Link href="/generate" className="btn-cartoon btn-primary text-lg px-10 py-4">
-              🚀 Start Creating
+              Start Creating
             </Link>
             <Link href="/community" className="btn-cartoon btn-secondary text-lg px-10 py-4">
-              🎭 View Gallery
+              View Gallery
             </Link>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {[
-              { emoji: "🎨", label: "Cartoon Style", value: "100%" },
-              { emoji: "⚡", label: "Generations/Day", value: "50" },
-              { emoji: "💎", label: "Cost", value: "$0" },
-              { emoji: "🚀", label: "Speed", value: "Fast" },
+              { label: "Cartoon Style", value: "100%" },
+              { label: "Generations/Day", value: "50" },
+              { label: "Cost", value: "$0" },
+              { label: "Speed", value: "Fast" },
             ].map((stat, i) => (
               <div key={i} className="card-cartoon text-center">
-                <div className="text-3xl mb-2">{stat.emoji}</div>
                 <div className="text-2xl font-bold text-primary mb-1">{stat.value}</div>
                 <div className="text-sm text-gray-600 font-semibold">{stat.label}</div>
               </div>
@@ -61,27 +60,27 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                title: "🎭 Pure Cartoon Style",
+                title: "Pure Cartoon Style",
                 description: "Every meme is generated in consistent cartoon crypto style. Think Pepe, Wojak, and classic meme aesthetics. No random styles or inconsistencies.",
               },
               {
-                title: "🎯 Character Builder",
+                title: "Character Builder",
                 description: "Create your own crypto character once, then use it in unlimited scenarios. Your character stays consistent across all generations.",
               },
               {
-                title: "🖼️ Custom Assets",
+                title: "Custom Assets",
                 description: "Upload your coin logo, project mascot, or any custom asset. We'll integrate them perfectly into your memes while keeping the cartoon style.",
               },
               {
-                title: "⚡ Lightning Fast",
+                title: "Lightning Fast",
                 description: "No waiting, no queues. Generate your memes instantly with our optimized AI pipeline powered by OpenAI DALL-E.",
               },
               {
-                title: "💰 Totally Free",
+                title: "Totally Free",
                 description: "5 generations/day as guest, 50 generations/day with free account. No hidden fees, no premium tiers, no BS.",
               },
               {
-                title: "🌟 Community First",
+                title: "Community First",
                 description: "Share your creations in our community gallery. Get inspired by others. 100% open source and transparent.",
               },
             ].map((feature, i) => (
@@ -139,7 +138,7 @@ export default function Home() {
 
           <div className="text-center mt-12">
             <Link href="/generate" className="btn-cartoon btn-accent text-lg px-12 py-4 inline-block">
-              Try It Now - It's Free! 🎨
+              Try It Now - It's Free!
             </Link>
           </div>
         </div>

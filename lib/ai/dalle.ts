@@ -24,10 +24,11 @@ export async function generateMemeImage(options: PromptOptions): Promise<Generat
     });
 
     // Get DALL-E parameters
-    const dalleParams = getDALLEParams(enhancedPrompt);
+    const dalleParams = getDALLEParams(enhancedPrompt, options.format);
 
     console.log('Generating image with DALL-E...');
     console.log('Enhanced prompt:', enhancedPrompt);
+    console.log('Format:', options.format || 'square');
 
     // Generate image
     const response = await openai.images.generate({

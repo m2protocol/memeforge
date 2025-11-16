@@ -71,6 +71,10 @@ model Meme {
   isPublic        Boolean   @default(false) @map("is_public")
   likes           Int       @default(0)
   views           Int       @default(0)
+  format          String?   @default("square") @db.VarChar(20)
+  brandColor1     String?   @map("brand_color_1") @db.VarChar(7)
+  brandColor2     String?   @map("brand_color_2") @db.VarChar(7)
+  logoUrl         String?   @map("logo_url") @db.Text
   createdAt       DateTime  @default(now()) @map("created_at")
 
   user            User?      @relation(fields: [userId], references: [id], onDelete: SetNull)

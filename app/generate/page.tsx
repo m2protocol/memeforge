@@ -271,7 +271,7 @@ export default function GeneratePage() {
                       onClick={handleDownload}
                       className="btn-cartoon btn-accent"
                     >
-                      ⬇️ Download
+                      Download
                     </button>
                     <button
                       onClick={handleShare}

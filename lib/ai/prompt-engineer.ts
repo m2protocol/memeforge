@@ -8,6 +8,10 @@ export interface PromptOptions {
   characterPrompt?: string;
   assetDescriptions?: string[];
   style?: 'pepe' | 'wojak' | 'cartoon' | 'general';
+  format?: 'horizontal' | 'vertical' | 'square';
+  brandColor1?: string;
+  brandColor2?: string;
+  logoDescription?: string;
 }
 
 /**
@@ -100,7 +104,7 @@ Style reference: Crypto meme cartoon aesthetic
  * Enhance user prompt with style enforcement
  */
 export function enhancePrompt(options: PromptOptions): string {
-  const { userPrompt, characterPrompt, assetDescriptions, style = 'general' } = options;
+  const { userPrompt, characterPrompt, assetDescriptions, style = 'general', brandColor1, brandColor2, logoDescription } = options;
 
   let enhancedPrompt = '';
 
@@ -116,14 +120,28 @@ export function enhancePrompt(options: PromptOptions): string {
   enhancedPrompt += STYLE_RULES.composition;
   enhancedPrompt += '\n\n';
 
-  // 4. Add character consistency if character is provided
+  // 4. Add branding colors if provided
+  if (brandColor1 || brandColor2) {
+    enhancedPrompt += 'BRANDING COLORS TO USE:\n';
+    if (brandColor1) enhancedPrompt += `- Primary brand color: ${brandColor1} (use this as the main color theme)\n`;
+    if (brandColor2) enhancedPrompt += `- Secondary brand color: ${brandColor2} (use this as accent color)\n`;
+    enhancedPrompt += 'Incorporate these colors naturally into the meme while maintaining cartoon style.\n\n';
+  }
+
+  // 5. Add logo/coin description if provided
+  if (logoDescription) {
+    enhancedPrompt += `LOGO/COIN TO INCLUDE:\n${logoDescription}\n`;
+    enhancedPrompt += 'Include this logo/coin in the meme in a natural way (character holding it, background element, etc.) while keeping cartoon style.\n\n';
+  }
+
+  // 6. Add character consistency if character is provided
   if (characterPrompt) {
     enhancedPrompt += STYLE_RULES.character;
     enhancedPrompt += '\n\n';
     enhancedPrompt += `CHARACTER DESCRIPTION:\n${characterPrompt}\n\n`;
   }
 
-  // 5. Add asset descriptions if provided
+  // 7. Add asset descriptions if provided
   if (assetDescriptions && assetDescriptions.length > 0) {
     enhancedPrompt += 'CUSTOM ASSETS TO INCLUDE:\n';
     assetDescriptions.forEach((asset, i) => {
@@ -132,7 +150,7 @@ export function enhancePrompt(options: PromptOptions): string {
     enhancedPrompt += '\nEnsure assets are rendered in the same cartoon style, maintaining their recognizable features.\n\n';
   }
 
-  // 6. Add text rules if prompt mentions text
+  // 8. Add text rules if prompt mentions text
   if (userPrompt.toLowerCase().includes('text') ||
       userPrompt.toLowerCase().includes('sign') ||
       userPrompt.toLowerCase().includes('number') ||
@@ -141,12 +159,12 @@ export function enhancePrompt(options: PromptOptions): string {
     enhancedPrompt += '\n\n';
   }
 
-  // 7. Add the actual user prompt
+  // 9. Add the actual user prompt
   enhancedPrompt += 'USER REQUEST:\n';
   enhancedPrompt += userPrompt;
   enhancedPrompt += '\n\n';
 
-  // 8. Final enforcement reminder
+  // 10. Final enforcement reminder
   enhancedPrompt += `
 FINAL REMINDER:
 Create this as a cartoon crypto meme illustration with:
@@ -194,11 +212,17 @@ export interface DALLEParams {
   style?: 'vivid' | 'natural';
 }
 
-export function getDALLEParams(enhancedPrompt: string): DALLEParams {
+export function getDALLEParams(enhancedPrompt: string, format?: 'horizontal' | 'vertical' | 'square'): DALLEParams {
+  const sizeMap = {
+    square: '1024x1024',
+    horizontal: '1792x1024',
+    vertical: '1024x1792',
+  };
+
   return {
     prompt: enhancedPrompt,
     n: 1,
-    size: '1024x1024', // Square format best for memes
+    size: sizeMap[format || 'square'] as '1024x1024' | '1024x1792' | '1792x1024',
     quality: 'standard', // Standard is faster and cheaper, good enough for cartoon style
     style: 'vivid', // Vivid gives more saturated colors, better for memes
   };

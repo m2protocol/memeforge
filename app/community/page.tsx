@@ -97,7 +97,7 @@ export default function CommunityPage() {
                 <div className="text-gray-600 font-semibold">Total Memes</div>
               </div>
               <div className="card-cartoon text-center">
-                <div className="text-4xl mb-2">❤️</div>
+                <div className="text-4xl mb-2"></div>
                 <div className="text-3xl font-black text-primary mb-1">
                   {memes.reduce((sum, m) => sum + m.likes, 0)}
                 </div>
@@ -127,6 +127,11 @@ export default function CommunityPage() {
                     />
                   </div>
 
+                  {/* Creator */}
+                  <p className="text-xs text-gray-500 mb-2 font-semibold">
+                    by {meme.user?.username || `memeforge_user${meme.userId || meme.id}`}
+                  </p>
+
                   {/* Prompt */}
                   <p className="text-sm text-gray-700 mb-4 line-clamp-2 font-medium">
                     {meme.prompt}
@@ -136,12 +141,10 @@ export default function CommunityPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4 text-sm text-gray-600">
                       <span className="flex items-center space-x-1">
-                        <span>👀</span>
-                        <span className="font-semibold">{meme.views}</span>
+                        <span className="font-semibold">{meme.views} views</span>
                       </span>
                       <span className="flex items-center space-x-1">
-                        <span>❤️</span>
-                        <span className="font-semibold">{meme.likes}</span>
+                        <span className="font-semibold">{meme.likes} likes</span>
                       </span>
                     </div>
 
@@ -149,7 +152,7 @@ export default function CommunityPage() {
                       onClick={() => handleLike(meme.id)}
                       className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-600 font-bold rounded-lg border-2 border-red-300 transition-all hover:scale-105"
                     >
-                      ❤️ Like
+                      Like
                     </button>
                   </div>
                 </div>

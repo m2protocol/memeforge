@@ -125,7 +125,11 @@ export const db = {
     imageUrl: string,
     userId?: number,
     characterId?: number,
-    isPublic: boolean = false
+    isPublic: boolean = false,
+    format?: string,
+    brandColor1?: string,
+    brandColor2?: string,
+    logoUrl?: string
   ) {
     return prisma.meme.create({
       data: {
@@ -135,6 +139,10 @@ export const db = {
         userId,
         characterId,
         isPublic,
+        format,
+        brandColor1,
+        brandColor2,
+        logoUrl,
       },
     });
   },
@@ -143,6 +151,14 @@ export const db = {
     return prisma.meme.findMany({
       where: {
         isPublic: true,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',

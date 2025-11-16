@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
       result.imageUrl,
       userId,
       characterId,
-      false // Not public by default
+      true // Auto-publish all memes to community
     );
 
     return NextResponse.json({
