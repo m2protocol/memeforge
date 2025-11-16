@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { sql } from '@vercel/postgres';
+import { db } from '@/lib/db';
 
 export async function POST(
   request: NextRequest,
@@ -25,11 +25,7 @@ export async function POST(
 
     const { isPublic } = await request.json();
 
-    await sql`
-      UPDATE memes
-      SET is_public = ${isPublic}
-      WHERE id = ${memeId} AND user_id = ${user.id}
-    `;
+    await db.updateMemeVisibility(memeId, user.id, isPublic);
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

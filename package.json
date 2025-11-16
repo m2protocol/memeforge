@@ -5,16 +5,18 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "next": "^15.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "openai": "^4.67.3",
-    "@vercel/postgres": "^0.10.0",
+    "@prisma/client": "^5.22.0",
+    "@prisma/extension-accelerate": "^1.2.1",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
     "sharp": "^0.33.5",
@@ -26,6 +28,7 @@
     "@types/react-dom": "^19.0.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.7",
+    "prisma": "^5.22.0",
     "typescript": "^5.6.3",
     "tailwindcss": "^3.4.14",
     "postcss": "^8.4.47",

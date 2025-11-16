@@ -1,129 +1,121 @@
-import { sql } from '@vercel/postgres';
+import { PrismaClient } from '@prisma/client';
 
-export interface User {
-  id: number;
-  email: string;
-  username: string;
-  password_hash: string;
-  created_at: Date;
-  updated_at: Date;
-  daily_limit: number;
-  is_active: boolean;
-}
+// Singleton pattern for Prisma Client
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
 
-export interface Character {
-  id: number;
-  user_id: number;
-  name: string;
-  description: string;
-  style_prompt: string;
-  reference_image_url?: string;
-  created_at: Date;
-  updated_at: Date;
-  is_active: boolean;
-}
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  });
 
-export interface Asset {
-  id: number;
-  user_id: number;
-  name: string;
-  description?: string;
-  image_url: string;
-  asset_type: 'logo' | 'coin' | 'mascot' | 'custom';
-  created_at: Date;
-  is_active: boolean;
-}
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
-export interface Meme {
-  id: number;
-  user_id?: number;
-  prompt: string;
-  enhanced_prompt: string;
-  image_url: string;
-  character_id?: number;
-  is_public: boolean;
-  likes: number;
-  views: number;
-  created_at: Date;
-}
-
-export interface Generation {
-  id: number;
-  user_id?: number;
-  session_id?: string;
-  ip_address?: string;
-  created_at: Date;
-}
+// Export types
+export type {
+  User,
+  Character,
+  Asset,
+  Meme,
+  Generation,
+} from '@prisma/client';
 
 // Database helper functions
 export const db = {
   // Users
-  async createUser(email: string, username: string, passwordHash: string): Promise<User> {
-    const result = await sql<User>`
-      INSERT INTO users (email, username, password_hash)
-      VALUES (${email}, ${username}, ${passwordHash})
-      RETURNING *
-    `;
-    return result.rows[0];
+  async createUser(email: string, username: string, passwordHash: string) {
+    return prisma.user.create({
+      data: {
+        email,
+        username,
+        passwordHash,
+      },
+    });
   },
 
-  async getUserByEmail(email: string): Promise<User | null> {
-    const result = await sql<User>`
-      SELECT * FROM users WHERE email = ${email} LIMIT 1
-    `;
-    return result.rows[0] || null;
+  async getUserByEmail(email: string) {
+    return prisma.user.findUnique({
+      where: { email },
+    });
   },
 
-  async getUserById(id: number): Promise<User | null> {
-    const result = await sql<User>`
-      SELECT * FROM users WHERE id = ${id} LIMIT 1
-    `;
-    return result.rows[0] || null;
+  async getUserById(id: number) {
+    return prisma.user.findUnique({
+      where: { id },
+    });
   },
 
   // Characters
-  async createCharacter(userId: number, name: string, description: string, stylePrompt: string, referenceImageUrl?: string): Promise<Character> {
-    const result = await sql<Character>`
-      INSERT INTO characters (user_id, name, description, style_prompt, reference_image_url)
-      VALUES (${userId}, ${name}, ${description}, ${stylePrompt}, ${referenceImageUrl || null})
-      RETURNING *
-    `;
-    return result.rows[0];
+  async createCharacter(
+    userId: number,
+    name: string,
+    description: string,
+    stylePrompt: string,
+    referenceImageUrl?: string
+  ) {
+    return prisma.character.create({
+      data: {
+        userId,
+        name,
+        description,
+        stylePrompt,
+        referenceImageUrl,
+      },
+    });
   },
 
-  async getCharactersByUserId(userId: number): Promise<Character[]> {
-    const result = await sql<Character>`
-      SELECT * FROM characters
-      WHERE user_id = ${userId} AND is_active = true
-      ORDER BY created_at DESC
-    `;
-    return result.rows;
+  async getCharactersByUserId(userId: number) {
+    return prisma.character.findMany({
+      where: {
+        userId,
+        isActive: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   },
 
-  async getCharacterById(id: number): Promise<Character | null> {
-    const result = await sql<Character>`
-      SELECT * FROM characters WHERE id = ${id} AND is_active = true LIMIT 1
-    `;
-    return result.rows[0] || null;
+  async getCharacterById(id: number) {
+    return prisma.character.findUnique({
+      where: {
+        id,
+        isActive: true,
+      },
+    });
   },
 
   // Assets
-  async createAsset(userId: number, name: string, imageUrl: string, assetType: string, description?: string): Promise<Asset> {
-    const result = await sql<Asset>`
-      INSERT INTO assets (user_id, name, image_url, asset_type, description)
-      VALUES (${userId}, ${name}, ${imageUrl}, ${assetType}, ${description || null})
-      RETURNING *
-    `;
-    return result.rows[0];
+  async createAsset(
+    userId: number,
+    name: string,
+    imageUrl: string,
+    assetType: string,
+    description?: string
+  ) {
+    return prisma.asset.create({
+      data: {
+        userId,
+        name,
+        imageUrl,
+        assetType,
+        description,
+      },
+    });
   },
 
-  async getAssetsByUserId(userId: number): Promise<Asset[]> {
-    const result = await sql<Asset>`
-      SELECT * FROM assets
-      WHERE user_id = ${userId} AND is_active = true
-      ORDER BY created_at DESC
-    `;
-    return result.rows;
+  async getAssetsByUserId(userId: number) {
+    return prisma.asset.findMany({
+      where: {
+        userId,
+        isActive: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   },
 
   // Memes
@@ -134,80 +126,111 @@ export const db = {
     userId?: number,
     characterId?: number,
     isPublic: boolean = false
-  ): Promise<Meme> {
-    const result = await sql<Meme>`
-      INSERT INTO memes (user_id, prompt, enhanced_prompt, image_url, character_id, is_public)
-      VALUES (${userId || null}, ${prompt}, ${enhancedPrompt}, ${imageUrl}, ${characterId || null}, ${isPublic})
-      RETURNING *
-    `;
-    return result.rows[0];
+  ) {
+    return prisma.meme.create({
+      data: {
+        prompt,
+        enhancedPrompt,
+        imageUrl,
+        userId,
+        characterId,
+        isPublic,
+      },
+    });
   },
 
-  async getPublicMemes(limit: number = 50, offset: number = 0): Promise<Meme[]> {
-    const result = await sql<Meme>`
-      SELECT * FROM memes
-      WHERE is_public = true
-      ORDER BY created_at DESC
-      LIMIT ${limit} OFFSET ${offset}
-    `;
-    return result.rows;
+  async getPublicMemes(limit: number = 50, offset: number = 0) {
+    return prisma.meme.findMany({
+      where: {
+        isPublic: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: limit,
+      skip: offset,
+    });
   },
 
-  async getMemesByUserId(userId: number, limit: number = 50): Promise<Meme[]> {
-    const result = await sql<Meme>`
-      SELECT * FROM memes
-      WHERE user_id = ${userId}
-      ORDER BY created_at DESC
-      LIMIT ${limit}
-    `;
-    return result.rows;
+  async getMemesByUserId(userId: number, limit: number = 50) {
+    return prisma.meme.findMany({
+      where: {
+        userId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: limit,
+    });
   },
 
-  async incrementMemeViews(memeId: number): Promise<void> {
-    await sql`
-      UPDATE memes
-      SET views = views + 1
-      WHERE id = ${memeId}
-    `;
+  async incrementMemeViews(memeId: number) {
+    return prisma.meme.update({
+      where: { id: memeId },
+      data: {
+        views: {
+          increment: 1,
+        },
+      },
+    });
   },
 
-  async incrementMemeLikes(memeId: number): Promise<void> {
-    await sql`
-      UPDATE memes
-      SET likes = likes + 1
-      WHERE id = ${memeId}
-    `;
+  async incrementMemeLikes(memeId: number) {
+    return prisma.meme.update({
+      where: { id: memeId },
+      data: {
+        likes: {
+          increment: 1,
+        },
+      },
+    });
+  },
+
+  async updateMemeVisibility(memeId: number, userId: number, isPublic: boolean) {
+    return prisma.meme.updateMany({
+      where: {
+        id: memeId,
+        userId,
+      },
+      data: {
+        isPublic,
+      },
+    });
+  },
+
+  async deleteMeme(memeId: number, userId: number) {
+    return prisma.meme.deleteMany({
+      where: {
+        id: memeId,
+        userId,
+      },
+    });
   },
 
   // Generations (Rate Limiting)
-  async createGeneration(userId?: number, sessionId?: string, ipAddress?: string): Promise<Generation> {
-    const result = await sql<Generation>`
-      INSERT INTO generations (user_id, session_id, ip_address)
-      VALUES (${userId || null}, ${sessionId || null}, ${ipAddress || null})
-      RETURNING *
-    `;
-    return result.rows[0];
+  async createGeneration(userId?: number, sessionId?: string, ipAddress?: string) {
+    return prisma.generation.create({
+      data: {
+        userId,
+        sessionId,
+        ipAddress,
+      },
+    });
   },
 
   async getGenerationCountToday(userId?: number, sessionId?: string): Promise<number> {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    let result;
-    if (userId) {
-      result = await sql<{ count: string }>`
-        SELECT COUNT(*) as count FROM generations
-        WHERE user_id = ${userId} AND created_at >= ${today.toISOString()}
-      `;
-    } else if (sessionId) {
-      result = await sql<{ count: string }>`
-        SELECT COUNT(*) as count FROM generations
-        WHERE session_id = ${sessionId} AND created_at >= ${today.toISOString()}
-      `;
-    } else {
-      return 0;
-    }
+    const count = await prisma.generation.count({
+      where: {
+        ...(userId ? { userId } : { sessionId }),
+        createdAt: {
+          gte: today,
+        },
+      },
+    });
 
-    return parseInt(result.rows[0].count);
+    return count;
   },
 };

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { sql } from '@vercel/postgres';
+import { db } from '@/lib/db';
 
 export async function DELETE(
   request: NextRequest,
@@ -23,10 +23,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Invalid meme ID' }, { status: 400 });
     }
 
-    await sql`
-      DELETE FROM memes
-      WHERE id = ${memeId} AND user_id = ${user.id}
-    `;
+    await db.deleteMeme(memeId, user.id);
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
