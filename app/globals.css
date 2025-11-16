@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Logo Font */
+@import url(https://db.onlinewebfonts.com/c/caee1354bdde994a941282f227254c91?family=CCBattleScarredOpen);
+
+@font-face {
+  font-family: "CCBattleScarredOpen";
+  src: url("https://db.onlinewebfonts.com/t/caee1354bdde994a941282f227254c91.eot");
+  src: url("https://db.onlinewebfonts.com/t/caee1354bdde994a941282f227254c91.eot?#iefix")format("embedded-opentype"),
+  url("https://db.onlinewebfonts.com/t/caee1354bdde994a941282f227254c91.woff2")format("woff2"),
+  url("https://db.onlinewebfonts.com/t/caee1354bdde994a941282f227254c91.woff")format("woff"),
+  url("https://db.onlinewebfonts.com/t/caee1354bdde994a941282f227254c91.ttf")format("truetype"),
+  url("https://db.onlinewebfonts.com/t/caee1354bdde994a941282f227254c91.svg#CCBattleScarredOpen")format("svg");
+}
+
+/* Main Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #f5f7fa;
+  color: #2d3748;
+  overflow-x: hidden;
+}
+
+/* Cartoon Button Styles */
+.btn-cartoon {
+  @apply font-bold py-3 px-6 rounded-xl border-4 border-cartoon-dark
+         transform transition-all duration-150 active:translate-y-1
+         shadow-[4px_4px_0px_0px_rgba(45,55,72,1)]
+         active:shadow-[2px_2px_0px_0px_rgba(45,55,72,1)];
+}
+
+.btn-primary {
+  @apply bg-primary text-white hover:bg-opacity-90;
+}
+
+.btn-accent {
+  @apply bg-cartoon-accent text-cartoon-dark hover:bg-yellow-300;
+}
+
+.btn-secondary {
+  @apply bg-white text-cartoon-dark hover:bg-gray-50;
+}
+
+/* Card Styles */
+.card-cartoon {
+  @apply bg-white rounded-2xl border-4 border-cartoon-dark p-6
+         shadow-[6px_6px_0px_0px_rgba(45,55,72,1)]
+         transition-all duration-200 hover:translate-x-1 hover:translate-y-1
+         hover:shadow-[4px_4px_0px_0px_rgba(45,55,72,1)];
+}
+
+/* Input Styles */
+.input-cartoon {
+  @apply w-full px-4 py-3 rounded-lg border-3 border-cartoon-dark
+         focus:outline-none focus:ring-4 focus:ring-primary focus:ring-opacity-30
+         transition-all duration-150;
+}
+
+/* Heading Styles */
+h1, h2, h3 {
+  @apply font-bold text-cartoon-dark;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #738ebd;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5a7199;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+.wiggle {
+  animation: wiggle 1s ease-in-out infinite;
+}
