@@ -24,7 +24,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <Image
-              src="/logos/logo-horizontal.png"
+              src="/logos/logo-horizontal-memeforge.png"
               alt="MemeForge"
               width={200}
               height={60}

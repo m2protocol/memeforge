@@ -14,7 +14,7 @@ export default function Footer() {
           <div className="md:col-span-2">
             <Link href="/" className="inline-block mb-4">
               <Image
-                src="/logos/logo-horizontal.png"
+                src="/logos/logo-horizontal-memeforge.png"
                 alt="MemeForge"
                 width={180}
                 height={54}
