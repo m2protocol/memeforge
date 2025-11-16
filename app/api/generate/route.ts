@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       const user = await auth.getCurrentUser(token);
       if (user) {
         userId = user.id;
-        dailyLimit = user.daily_limit;
+        dailyLimit = user.dailyLimit;
       }
     }
 

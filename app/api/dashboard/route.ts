@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
         totalLikes,
         totalViews,
         generationsToday,
-        dailyLimit: user.daily_limit,
+        dailyLimit: user.dailyLimit,
       },
     });
   } catch (error: any) {
