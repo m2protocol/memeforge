@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     if (characterId) {
       const character = await db.getCharacterById(characterId);
       if (character) {
-        characterPrompt = character.style_prompt;
+        characterPrompt = character.stylePrompt;
       }
     }
 
