@@ -72,13 +72,13 @@ export const auth = {
     }
 
     // Verify password
-    const isValid = await this.verifyPassword(password, user.password_hash);
+    const isValid = await this.verifyPassword(password, user.passwordHash);
     if (!isValid) {
       throw new Error('Invalid credentials');
     }
 
     // Check if user is active
-    if (!user.is_active) {
+    if (!user.isActive) {
       throw new Error('Account is deactivated');
     }
 
