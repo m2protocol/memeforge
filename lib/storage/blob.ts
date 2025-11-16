@@ -1,10 +1,24 @@
 import { put } from '@vercel/blob';
 
 /**
+ * Check if Vercel Blob is configured
+ */
+function isBlobConfigured(): boolean {
+  return !!process.env.BLOB_READ_WRITE_TOKEN;
+}
+
+/**
  * Upload image from URL to Vercel Blob storage
  * This ensures images persist beyond DALL-E's temporary URLs
+ * Falls back to original URL if blob storage is not configured
  */
 export async function uploadImageToBlob(imageUrl: string, filename: string): Promise<string> {
+  // If blob storage is not configured, return the original URL
+  if (!isBlobConfigured()) {
+    console.warn('Vercel Blob not configured. Using temporary DALL-E URL. Set BLOB_READ_WRITE_TOKEN environment variable for persistent storage.');
+    return imageUrl;
+  }
+
   try {
     // Fetch the image from DALL-E
     const response = await fetch(imageUrl);
@@ -24,7 +38,8 @@ export async function uploadImageToBlob(imageUrl: string, filename: string): Pro
     return url;
   } catch (error: any) {
     console.error('Failed to upload image to blob storage:', error);
-    throw new Error(`Image upload failed: ${error.message}`);
+    console.warn('Falling back to temporary DALL-E URL');
+    return imageUrl; // Fallback to original URL
   }
 }
 
