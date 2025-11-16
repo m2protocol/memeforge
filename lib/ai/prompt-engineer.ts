@@ -72,47 +72,51 @@ COMPOSITION RULES:
  */
 const STYLE_PRESETS = {
   pepe: `
-Style: Classic internet frog meme aesthetic
-- Simple amphibian character with minimal features
-- Solid flat green color for body
-- Thick black outlines around all shapes
-- Large white circular eyes with small black dots as pupils
-- Wide mouth that can show extreme emotions
-- Very simple body with basic limbs
-- Exaggerated facial expressions (happy, sad, smug, crying, etc.)
+Style: Simple cartoon amphibian character
+- ORIGINAL design - do NOT copy existing meme characters
+- Friendly cartoon animal style with simple features
+- Solid flat colors (green body, white/black eyes)
+- Thick black outlines (3px) around all shapes
+- Round expressive eyes with visible pupils
+- Simple smiling or emotional mouth
+- Basic body with arms and legs
+- Modern clean cartoon aesthetic - NOT retro meme style
 `,
 
   wojak: `
-Style: Classic internet character meme aesthetic
-- Very simple humanoid figure with minimal details
-- Round/oval head shape
-- Dots or small circles for eyes
-- Single curved line for mouth showing emotion
-- Pale peachy-pink flat color for skin
-- Bald head or very simple hair shape
-- Minimal body details, focus on face emotion
+Style: Simple cartoon human character
+- ORIGINAL design - do NOT copy existing meme faces
+- Friendly cartoon person style
+- Normal human proportions (not distorted)
+- Normal-sized eyes (not tiny dots)
+- Expressive facial features
+- Flat skin tone colors
+- Simple hair or bald head
+- Modern cartoon aesthetic - clean and friendly
 `,
 
   cartoon: `
-Style: Modern internet meme cartoon
-- Bold thick black outlines on everything
-- Solid flat colors, no gradients
-- Simplified body anatomy with basic shapes
-- Large expressive eyes (circles or ovals)
-- Exaggerated mouth for emotion
-- Clean vector appearance
-- Fun, energetic, meme-ready look
+Style: Modern clean cartoon character
+- Original friendly character design
+- Bold thick black outlines (3px) on everything
+- Solid flat bright colors, no gradients
+- Normal body proportions (not weird or distorted)
+- Large friendly expressive eyes with pupils
+- Happy or emotional expressions
+- Clean modern cartoon vector style
+- Cute and appealing aesthetic
 `,
 
   general: `
-Style: Internet meme cartoon aesthetic
-- Very bold and simple design
-- Thick black outlines separating all color areas
-- Flat solid colors only
-- Exaggerated features for comedy
-- Minimal details, maximum impact
-- Looks like it could go viral as a meme
-- Clean, readable from thumbnail size
+Style: Modern cartoon illustration
+- Clean, professional cartoon style
+- Thick black outlines (3px) on all shapes
+- Flat bright solid colors only
+- Characters with normal friendly proportions
+- Expressive eyes and mouths
+- Simple but appealing design
+- Modern vector cartoon aesthetic
+- NOT retro/old meme style
 `,
 };
 
@@ -123,6 +127,24 @@ export function enhancePrompt(options: PromptOptions): string {
   const { userPrompt, characterPrompt, assetDescriptions, style = 'general', brandColor1, brandColor2, logoDescription } = options;
 
   let enhancedPrompt = '';
+
+  // 0. CRITICAL ANTI-COPY INSTRUCTIONS FIRST
+  enhancedPrompt += `${'='.repeat(70)}\n`;
+  enhancedPrompt += `CRITICAL INSTRUCTIONS - READ FIRST\n`;
+  enhancedPrompt += `${'='.repeat(70)}\n`;
+  enhancedPrompt += `YOU MUST CREATE 100% ORIGINAL CONTENT\n\n`;
+  enhancedPrompt += `FORBIDDEN TO COPY:\n`;
+  enhancedPrompt += `✗ NO Dogecoin, Shiba Inu dog designs\n`;
+  enhancedPrompt += `✗ NO Bitcoin logos or symbols\n`;
+  enhancedPrompt += `✗ NO existing memecoin characters\n`;
+  enhancedPrompt += `✗ NO retro rage comic / troll face style\n`;
+  enhancedPrompt += `✗ NO weird distorted meme faces\n\n`;
+  enhancedPrompt += `REQUIRED STYLE:\n`;
+  enhancedPrompt += `✓ Modern clean cartoon characters\n`;
+  enhancedPrompt += `✓ Friendly, appealing designs\n`;
+  enhancedPrompt += `✓ Normal proportions (not distorted)\n`;
+  enhancedPrompt += `✓ Completely ORIGINAL designs\n`;
+  enhancedPrompt += `${'='.repeat(70)}\n\n`;
 
   // 1. Add base style rules
   enhancedPrompt += STYLE_RULES.base;
@@ -150,22 +172,39 @@ export function enhancePrompt(options: PromptOptions): string {
 
   // 5. Add logo/coin description if provided
   if (logoDescription) {
-    enhancedPrompt += `CRYPTOCURRENCY COIN/TOKEN TO INCLUDE:\n`;
-    enhancedPrompt += `User's coin description: "${logoDescription}"\n\n`;
-    enhancedPrompt += `CRITICAL COIN DESIGN RULES - FOLLOW EXACTLY:
-- Draw the coin EXACTLY as the user described it above
-- DO NOT use Bitcoin symbol (₿), Dogecoin logo, or ANY existing cryptocurrency symbols
-- If user says "dog with sunglasses", draw a simple cartoon dog face with sunglasses - NOT the Bitcoin logo
-- If user says "cat with crown", draw a simple cartoon cat face with crown - NOT any existing coin logo
-- The coin should be a simple CIRCLE with the described image/symbol inside
-- Use flat solid colors with thick black outline around the circle
-- Keep the design MINIMAL, CLEAN, and ORIGINAL
-- The coin should be clearly visible in the scene (character holding it, floating nearby, on display, etc.)
-- Size: make the coin prominent enough to see the design clearly
+    enhancedPrompt += `\n${'='.repeat(70)}\n`;
+    enhancedPrompt += `COIN/TOKEN DESIGN REQUIREMENTS - MANDATORY\n`;
+    enhancedPrompt += `${'='.repeat(70)}\n\n`;
 
-WRONG: Drawing Bitcoin, Ethereum, Dogecoin, or any recognizable crypto logo
-RIGHT: Drawing exactly what the user described (dog with sunglasses, letter T, cat face, etc.)
-\n`;
+    enhancedPrompt += `USER WANTS A COIN WITH: "${logoDescription}"\n\n`;
+
+    enhancedPrompt += `STEP 1 - UNDERSTAND WHAT TO DRAW:\n`;
+    enhancedPrompt += `Parse the user's description literally. If they say:\n`;
+    enhancedPrompt += `- "dog icon" = Draw a simple dog face\n`;
+    enhancedPrompt += `- "cat with crown" = Draw a cat wearing a crown\n`;
+    enhancedPrompt += `- "letter M" = Draw the letter M\n`;
+    enhancedPrompt += `- "rocket" = Draw a rocket ship\n\n`;
+
+    enhancedPrompt += `STEP 2 - WHAT YOU MUST NOT DRAW:\n`;
+    enhancedPrompt += `FORBIDDEN - DO NOT DRAW ANY OF THESE:\n`;
+    enhancedPrompt += `  ✗ Bitcoin "B" symbol with lines (₿)\n`;
+    enhancedPrompt += `  ✗ Ethereum diamond symbol (Ξ)\n`;
+    enhancedPrompt += `  ✗ Dogecoin "D" logo\n`;
+    enhancedPrompt += `  ✗ ANY cryptocurrency logo that exists in real life\n`;
+    enhancedPrompt += `  ✗ Generic "crypto" symbols or icons\n`;
+    enhancedPrompt += `  ✗ Dollar signs, stock market symbols\n\n`;
+
+    enhancedPrompt += `STEP 3 - HOW TO DRAW THE COIN:\n`;
+    enhancedPrompt += `1. Draw a simple CIRCLE (the coin shape)\n`;
+    enhancedPrompt += `2. Inside the circle, draw ONLY what the user described\n`;
+    enhancedPrompt += `3. Use simple cartoon style - thick black outlines, flat colors\n`;
+    enhancedPrompt += `4. Make it big enough to see clearly in the image\n`;
+    enhancedPrompt += `5. Place it visibly (character holding it, on display, etc.)\n\n`;
+
+    enhancedPrompt += `FOR THIS SPECIFIC REQUEST ("${logoDescription}"):\n`;
+    enhancedPrompt += `Draw a circular coin with ${logoDescription} inside - BE LITERAL AND EXACT\n`;
+    enhancedPrompt += `DO NOT substitute with Bitcoin or any other existing crypto logo\n`;
+    enhancedPrompt += `${'='.repeat(70)}\n\n`;
   }
 
   // 6. Add character consistency if character is provided
