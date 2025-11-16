@@ -21,10 +21,10 @@ const STYLE_RULES = {
   base: `
 CRITICAL STYLE REQUIREMENTS:
 - Cartoon illustration style ONLY, absolutely no photorealism
-- Crypto meme aesthetic (Pepe, Wojak, classic internet meme style)
-- Flat colors with bold outlines (2-4px black outlines)
-- Simple, exaggerated features and expressions
-- Clean, vector-like appearance
+- Internet meme aesthetic: bold, simple, exaggerated, comedic
+- Flat colors with bold black outlines (2-4px thick)
+- Simple shapes and minimal details
+- Clean, vector-like appearance similar to classic internet memes
 - NO gradients, NO subtle shading, NO complex textures
 - NO small details or intricate patterns
 - NO realistic lighting or shadows
@@ -65,38 +65,47 @@ COMPOSITION RULES:
  */
 const STYLE_PRESETS = {
   pepe: `
-Style reference: Classic Pepe the Frog meme style
-- Green frog character with simple features
-- Flat green color (#66BB6A or similar)
-- Black outline, white eyes with black pupils
-- Exaggerated expressions
-- Simple body proportions
+Style: Classic internet frog meme aesthetic
+- Simple amphibian character with minimal features
+- Solid flat green color for body
+- Thick black outlines around all shapes
+- Large white circular eyes with small black dots as pupils
+- Wide mouth that can show extreme emotions
+- Very simple body with basic limbs
+- Exaggerated facial expressions (happy, sad, smug, crying, etc.)
 `,
 
   wojak: `
-Style reference: Wojak/Feels Guy meme style
-- Simple humanoid character
-- Minimal facial features (dots for eyes, simple line for mouth)
-- Pale/pink skin tone (#FFE0BD or similar)
-- Bald or simple hair
-- Exaggerated emotional expressions
+Style: Classic internet character meme aesthetic
+- Very simple humanoid figure with minimal details
+- Round/oval head shape
+- Dots or small circles for eyes
+- Single curved line for mouth showing emotion
+- Pale peachy-pink flat color for skin
+- Bald head or very simple hair shape
+- Minimal body details, focus on face emotion
 `,
 
   cartoon: `
-Style reference: Modern cartoon crypto character
-- Bold outlines and flat colors
-- Simplified anatomy
-- Expressive eyes and mouth
-- Fun, energetic vibe
-- Clean vector-like appearance
+Style: Modern internet meme cartoon
+- Bold thick black outlines on everything
+- Solid flat colors, no gradients
+- Simplified body anatomy with basic shapes
+- Large expressive eyes (circles or ovals)
+- Exaggerated mouth for emotion
+- Clean vector appearance
+- Fun, energetic, meme-ready look
 `,
 
   general: `
-Style reference: Crypto meme cartoon aesthetic
-- Internet meme art style
-- Bold, simple, and immediately readable
-- Exaggerated features for comedic effect
-- Flat color design
+Style: Internet meme cartoon aesthetic
+- Very bold and simple design
+- Thick black outlines separating all color areas
+- Flat solid colors only
+- Exaggerated features for comedy
+- Minimal details, maximum impact
+- Looks like it could go viral as a meme
+- Clean, readable from thumbnail size
 `,
 };
 
@@ -122,16 +131,31 @@ export function enhancePrompt(options: PromptOptions): string {
 
   // 4. Add branding colors if provided
   if (brandColor1 || brandColor2) {
-    enhancedPrompt += 'BRANDING COLORS TO USE:\n';
-    if (brandColor1) enhancedPrompt += `- Primary brand color: ${brandColor1} (use this as the main color theme)\n`;
-    if (brandColor2) enhancedPrompt += `- Secondary brand color: ${brandColor2} (use this as accent color)\n`;
-    enhancedPrompt += 'Incorporate these colors naturally into the meme while maintaining cartoon style.\n\n';
+    enhancedPrompt += 'BRAND COLOR PALETTE:\n';
+    if (brandColor1) {
+      enhancedPrompt += `- Main color: ${brandColor1} (use as PRIMARY color for character body, background, or main elements)\n`;
+    }
+    if (brandColor2) {
+      enhancedPrompt += `- Accent color: ${brandColor2} (use as SECONDARY color for highlights, accessories, or complementary elements)\n`;
+    }
+    enhancedPrompt += 'IMPORTANT: These colors MUST be prominently visible in the final image. Apply them to major elements like character body, clothing, background, or objects.\n\n';
   }
 
   // 5. Add logo/coin description if provided
   if (logoDescription) {
-    enhancedPrompt += `LOGO/COIN TO INCLUDE:\n${logoDescription}\n`;
-    enhancedPrompt += 'Include this logo/coin in the meme in a natural way (character holding it, background element, etc.) while keeping cartoon style.\n\n';
+    enhancedPrompt += `CRYPTOCURRENCY COIN/TOKEN TO INCLUDE:\n`;
+    enhancedPrompt += `Description: ${logoDescription}\n`;
+    enhancedPrompt += `CRITICAL COIN DESIGN RULES:
+- Draw as a simple CIRCULAR coin/token (like a physical coin)
+- Put ONLY the main symbol/letter/logo in the center (NO extra text, NO words, NO slogans)
+- If it's a letter (like "T"), make it large, bold, and centered
+- Use flat solid colors with thick black outline
+- Make it look like a crypto memecoin (simple, clean, iconic)
+- The coin should be clearly visible (character holding it, floating nearby, on shirt, etc.)
+- Keep the coin design MINIMAL and CLEAN
+
+EXAMPLE: If the coin is "T coin", draw a circle with just a big bold "T" in the center - NO other text or decorations.
+\n`;
   }
 
   // 6. Add character consistency if character is provided
