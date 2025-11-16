@@ -15,30 +15,41 @@ function isBlobConfigured(): boolean {
 export async function uploadImageToBlob(imageUrl: string, filename: string): Promise<string> {
   // If blob storage is not configured, return the original URL
   if (!isBlobConfigured()) {
-    console.warn('Vercel Blob not configured. Using temporary DALL-E URL. Set BLOB_READ_WRITE_TOKEN environment variable for persistent storage.');
+    console.warn('[BLOB] Not configured - BLOB_READ_WRITE_TOKEN not found');
+    console.warn('[BLOB] Using temporary DALL-E URL (will expire in ~1 hour)');
     return imageUrl;
   }
 
+  console.log('[BLOB] Starting upload process...');
+  console.log('[BLOB] Filename:', filename);
+  console.log('[BLOB] Source URL:', imageUrl.substring(0, 100) + '...');
+
   try {
     // Fetch the image from DALL-E
+    console.log('[BLOB] Fetching image from DALL-E...');
     const response = await fetch(imageUrl);
     if (!response.ok) {
       throw new Error(`Failed to fetch image: ${response.statusText}`);
     }
 
     const blob = await response.blob();
+    console.log('[BLOB] Image fetched successfully, size:', blob.size, 'bytes');
+    console.log('[BLOB] Content type:', blob.type);
 
     // Upload to Vercel Blob
+    console.log('[BLOB] Uploading to Vercel Blob storage...');
     const { url } = await put(filename, blob, {
       access: 'public',
       contentType: blob.type || 'image/png',
     });
 
-    console.log('Image uploaded to blob storage:', url);
+    console.log('[BLOB] ✓ Upload successful!');
+    console.log('[BLOB] Permanent URL:', url);
     return url;
   } catch (error: any) {
-    console.error('Failed to upload image to blob storage:', error);
-    console.warn('Falling back to temporary DALL-E URL');
+    console.error('[BLOB] ✗ Upload failed:', error.message);
+    console.error('[BLOB] Full error:', error);
+    console.warn('[BLOB] Falling back to temporary DALL-E URL');
     return imageUrl; // Fallback to original URL
   }
 }
