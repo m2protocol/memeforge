@@ -1,8 +1,0 @@
-{
-  "buildCommand": "npm run build",
-  "framework": "nextjs",
-  "env": {
-    "OPENAI_API_KEY": "@openai-api-key",
-    "JWT_SECRET": "@jwt-secret"
-  }
-}
