@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         id: user.id,
         email: user.email,
         username: user.username,
-        dailyLimit: user.daily_limit,
+        dailyLimit: user.dailyLimit,
       },
     });
   } catch (error: any) {
