@@ -5,7 +5,7 @@ import { db } from '@/lib/db';
 
 export async function POST(request: NextRequest) {
   try {
-    const { prompt, style, characterId } = await request.json();
+    const { prompt, style, characterId, format, brandColor1, brandColor2, logoDescription } = await request.json();
 
     if (!prompt || typeof prompt !== 'string') {
       return NextResponse.json(
@@ -53,6 +53,10 @@ export async function POST(request: NextRequest) {
       userPrompt: prompt,
       style: style || 'general',
       characterPrompt,
+      format: format || 'square',
+      brandColor1,
+      brandColor2,
+      logoDescription,
     });
 
     // Save to database
@@ -66,7 +70,11 @@ export async function POST(request: NextRequest) {
       result.imageUrl,
       userId,
       characterId,
-      true // Auto-publish all memes to community
+      true, // Auto-publish all memes to community
+      format,
+      brandColor1,
+      brandColor2,
+      logoDescription
     );
 
     return NextResponse.json({

@@ -13,6 +13,10 @@ interface GeneratedImage {
 export default function GeneratePage() {
   const [prompt, setPrompt] = useState('');
   const [style, setStyle] = useState<'general' | 'pepe' | 'wojak' | 'cartoon'>('general');
+  const [format, setFormat] = useState<'square' | 'horizontal' | 'vertical'>('square');
+  const [brandColor1, setBrandColor1] = useState('');
+  const [brandColor2, setBrandColor2] = useState('');
+  const [logoDescription, setLogoDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [generatedImage, setGeneratedImage] = useState<GeneratedImage | null>(null);
@@ -81,6 +85,10 @@ export default function GeneratePage() {
         body: JSON.stringify({
           prompt: prompt.trim(),
           style,
+          format,
+          brandColor1: brandColor1 || undefined,
+          brandColor2: brandColor2 || undefined,
+          logoDescription: logoDescription.trim() || undefined,
         }),
       });
 
@@ -188,9 +196,78 @@ export default function GeneratePage() {
               </div>
             </div>
 
+            {/* Format Selection */}
+            <div className="card-cartoon">
+              <h3 className="text-xl font-bold text-cartoon-dark mb-4">Format</h3>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { value: 'square', label: '1:1 Square' },
+                  { value: 'horizontal', label: '16:9 Wide' },
+                  { value: 'vertical', label: '9:16 Tall' },
+                ].map((f) => (
+                  <button
+                    key={f.value}
+                    onClick={() => setFormat(f.value as any)}
+                    className={`p-4 rounded-lg border-3 font-bold transition-all ${
+                      format === f.value
+                        ? 'bg-primary text-white border-cartoon-dark shadow-[4px_4px_0px_0px_rgba(45,55,72,1)]'
+                        : 'bg-white text-cartoon-dark border-gray-300 hover:border-primary'
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Branding Options */}
+            <div className="card-cartoon">
+              <h3 className="text-xl font-bold text-cartoon-dark mb-4">Branding (Optional)</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Primary Brand Color
+                  </label>
+                  <input
+                    type="color"
+                    value={brandColor1}
+                    onChange={(e) => setBrandColor1(e.target.value)}
+                    className="w-full h-12 rounded-lg border-3 border-cartoon-dark cursor-pointer"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Secondary Brand Color
+                  </label>
+                  <input
+                    type="color"
+                    value={brandColor2}
+                    onChange={(e) => setBrandColor2(e.target.value)}
+                    className="w-full h-12 rounded-lg border-3 border-cartoon-dark cursor-pointer"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Logo/Coin Description
+                  </label>
+                  <input
+                    type="text"
+                    value={logoDescription}
+                    onChange={(e) => setLogoDescription(e.target.value)}
+                    placeholder="e.g., Bitcoin logo, Pepe coin with crown"
+                    className="input-cartoon"
+                    maxLength={200}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Describe your coin/logo so AI can include it in the meme
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Prompt Input */}
             <div className="card-cartoon">
-              <h3 className="text-xl font-bold text-cartoon-dark mb-4">💭 Describe Your Meme</h3>
+              <h3 className="text-xl font-bold text-cartoon-dark mb-4">Describe Your Meme</h3>
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
