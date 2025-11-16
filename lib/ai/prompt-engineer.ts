@@ -24,11 +24,18 @@ CRITICAL STYLE REQUIREMENTS:
 - Internet meme aesthetic: bold, simple, exaggerated, comedic
 - Flat colors with bold black outlines (2-4px thick)
 - Simple shapes and minimal details
-- Clean, vector-like appearance similar to classic internet memes
+- Clean, vector-like appearance
 - NO gradients, NO subtle shading, NO complex textures
 - NO small details or intricate patterns
 - NO realistic lighting or shadows
 - NO 3D rendering effects
+
+IMPORTANT ORIGINALITY RULES:
+- DO NOT copy or reference ANY existing cryptocurrency logos or memecoins (Bitcoin, Dogecoin, Shiba Inu, Pepe Coin, etc.)
+- DO NOT use specific recognizable animal breeds (Shiba Inu dogs, specific cat breeds, etc.)
+- CREATE ORIGINAL cartoon characters and designs
+- If the user describes an animal, make it a GENERIC cartoon version (simple dog, simple cat, simple frog, etc.)
+- Focus on the EMOTION and SCENARIO, not copying existing meme formats
 `,
 
   text: `
@@ -144,17 +151,20 @@ export function enhancePrompt(options: PromptOptions): string {
   // 5. Add logo/coin description if provided
   if (logoDescription) {
     enhancedPrompt += `CRYPTOCURRENCY COIN/TOKEN TO INCLUDE:\n`;
-    enhancedPrompt += `Description: ${logoDescription}\n`;
-    enhancedPrompt += `CRITICAL COIN DESIGN RULES:
-- Draw as a simple CIRCULAR coin/token (like a physical coin)
-- Put ONLY the main symbol/letter/logo in the center (NO extra text, NO words, NO slogans)
-- If it's a letter (like "T"), make it large, bold, and centered
-- Use flat solid colors with thick black outline
-- Make it look like a crypto memecoin (simple, clean, iconic)
-- The coin should be clearly visible (character holding it, floating nearby, on shirt, etc.)
-- Keep the coin design MINIMAL and CLEAN
+    enhancedPrompt += `User's coin description: "${logoDescription}"\n\n`;
+    enhancedPrompt += `CRITICAL COIN DESIGN RULES - FOLLOW EXACTLY:
+- Draw the coin EXACTLY as the user described it above
+- DO NOT use Bitcoin symbol (₿), Dogecoin logo, or ANY existing cryptocurrency symbols
+- If user says "dog with sunglasses", draw a simple cartoon dog face with sunglasses - NOT the Bitcoin logo
+- If user says "cat with crown", draw a simple cartoon cat face with crown - NOT any existing coin logo
+- The coin should be a simple CIRCLE with the described image/symbol inside
+- Use flat solid colors with thick black outline around the circle
+- Keep the design MINIMAL, CLEAN, and ORIGINAL
+- The coin should be clearly visible in the scene (character holding it, floating nearby, on display, etc.)
+- Size: make the coin prominent enough to see the design clearly
 
-EXAMPLE: If the coin is "T coin", draw a circle with just a big bold "T" in the center - NO other text or decorations.
+WRONG: Drawing Bitcoin, Ethereum, Dogecoin, or any recognizable crypto logo
+RIGHT: Drawing exactly what the user described (dog with sunglasses, letter T, cat face, etc.)
 \n`;
   }
 
@@ -191,12 +201,14 @@ EXAMPLE: If the coin is "T coin", draw a circle with just a big bold "T" in the 
   // 10. Final enforcement reminder
   enhancedPrompt += `
 FINAL REMINDER:
-Create this as a cartoon crypto meme illustration with:
+Create this as an ORIGINAL cartoon crypto meme illustration with:
 - Flat colors and bold black outlines
 - Simple, exaggerated features
 - Clean, meme-ready aesthetic
 - NO photorealism or complex details
-- Style must be consistent and recognizable as a crypto meme
+- DO NOT copy Dogecoin, Bitcoin, Shiba Inu, or ANY existing memecoin designs
+- CREATE a completely original character and scene
+- If coin is specified, draw EXACTLY what user described, NOT existing crypto logos
 `;
 
   return enhancedPrompt.trim();
